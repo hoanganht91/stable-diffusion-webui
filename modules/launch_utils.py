@@ -418,8 +418,8 @@ except ImportError:
             # print(f"No changes needed in: {file_path}")
             pass
 
-    except ImportError:
-        print("Package basicsr not found.")
+    except Exception as e:
+        print("Fix patch basicsr package error:", e)
 
 if not is_installed("requests"):
     run_pip("install requests", "requests")
