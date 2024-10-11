@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-git clone https://github.com/heatmobcompany/sd-webui-controlnet /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet
-git clone https://github.com/heatmobcompany/sd-webui-segment-anything /workspace/stable-diffusion-webui/extensions/sd-webui-segment-anything
-git clone https://github.com/heatmobcompany/sd-webui-roop /workspace/stable-diffusion-webui/extensions/sd-webui-roop
-git clone https://github.com/heatmobcompany/sd-webui-adetailer /workspace/stable-diffusion-webui/extensions/sd-webui-adetailer
-git clone https://github.com/heatmobcompany/sd-ootd /workspace/stable-diffusion-webui/extensions/sd-ootd
-git clone https://github.com/heatmobcompany/stable-diffusion-webui-rembg /workspace/stable-diffusion-webui/extensions/stable-diffusion-webui-rembg
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui-controlnet.git /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui-segment-anything.git /workspace/stable-diffusion-webui/extensions/sd-webui-segment-anything
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-roop.git /workspace/stable-diffusion-webui/extensions/sd-webui-roop
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-adetailer.git /workspace/stable-diffusion-webui/extensions/sd-webui-adetailer
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-ootd.git /workspace/stable-diffusion-webui/extensions/sd-webui-ootd
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-cvt.git /workspace/stable-diffusion-webui/extensions/sd-webui-cvt
 
 # setup checkpoint
 aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/annh/general/resolve/main/chilloutmix_NiPrunedFp32.safetensors -d /workspace/stable-diffusion-webui/models/Stable-diffusion -o chilloutmix_NiPrunedFp32.safetensors
