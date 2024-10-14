@@ -269,11 +269,11 @@ def requirements_met(requirements_file):
 
 
 def prepare_environment():
-    torch_index_url = os.environ.get('TORCH_INDEX_URL', "https://download.pytorch.org/whl/cu118")
-    torch_command = os.environ.get('TORCH_COMMAND', f"pip install torch==2.0.1 torchvision==0.15.2 --extra-index-url {torch_index_url}")
+    torch_index_url = os.environ.get('TORCH_INDEX_URL', "https://download.pytorch.org/whl/cu121")
+    torch_command = os.environ.get('TORCH_COMMAND', f"pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url {torch_index_url}")
     requirements_file = os.environ.get('REQS_FILE', "requirements_versions.txt")
 
-    xformers_package = os.environ.get('XFORMERS_PACKAGE', 'xformers==0.0.20')
+    xformers_package = os.environ.get('XFORMERS_PACKAGE', 'xformers==v0.0.28')
     gfpgan_package = os.environ.get('GFPGAN_PACKAGE', "https://github.com/TencentARC/GFPGAN/archive/8d2447a2d918f8eba5a4a01463fd48e45126a379.zip")
     clip_package = os.environ.get('CLIP_PACKAGE', "https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip")
     openclip_package = os.environ.get('OPENCLIP_PACKAGE', "https://github.com/mlfoundations/open_clip/archive/bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b.zip")
@@ -393,5 +393,34 @@ def start():
     else:
         webui.webui()
 
+def fix_basicsr_package():
+    try:
+        basicsr_path = os.path.dirname(importlib.util.find_spec("basicsr").origin)
+        file_path = os.path.join(basicsr_path, 'data', 'degradations.py')
+        if not os.path.isfile(file_path):
+            print(f"File not found: {file_path}")
+            return
+        old_import = '\nfrom torchvision.transforms.functional_tensor import rgb_to_grayscale'
+        new_import = '''
+try:
+    from torchvision.transforms.functional_tensor import rgb_to_grayscale
+except ImportError:
+    from torchvision.transforms.functional import rgb_to_grayscale
+'''
+        with open(file_path, 'r') as file:
+            content = file.read()
+        if old_import in content:
+            new_content = content.replace(old_import, new_import)
+            with open(file_path, 'w') as file:
+                file.write(new_content)
+            print(f"Replaced import in: {file_path}")
+        else:
+            # print(f"No changes needed in: {file_path}")
+            pass
+
+    except Exception as e:
+        print("Fix patch basicsr package error:", e)
+
 if not is_installed("requests"):
     run_pip("install requests", "requests")
+fix_basicsr_package()

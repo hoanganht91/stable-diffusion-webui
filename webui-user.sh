@@ -36,7 +36,7 @@ venv_dir="/workspace/venv"
 #export LAUNCH_SCRIPT="launch.py"
 
 # install command for torch
-export TORCH_COMMAND="pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117"
+export TORCH_COMMAND="pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cu121"
 
 # Requirements file to use for stable-diffusion-webui
 #export REQS_FILE="./extensions/sd_dreambooth_extension/requirements.txt"

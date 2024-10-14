@@ -19,12 +19,12 @@ pip install --upgrade pip
 mkdir -p /workspace/logs
 
 # setup extension
-git clone https://github.com/heatmobcompany/sd-webui-controlnet /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet
-git clone https://github.com/heatmobcompany/sd-webui-segment-anything /workspace/stable-diffusion-webui/extensions/sd-webui-segment-anything
-git clone https://github.com/heatmobcompany/sd-webui-roop /workspace/stable-diffusion-webui/extensions/sd-webui-roop
-git clone https://github.com/heatmobcompany/sd-webui-adetailer /workspace/stable-diffusion-webui/extensions/sd-webui-adetailer
-git clone https://github.com/heatmobcompany/sd-webui-openpose-editor /workspace/stable-diffusion-webui/extensions/sd-webui-openpose-editor
-git clone https://github.com/heatmobcompany/sd-ootd /workspace/stable-diffusion-webui/extensions/sd-ootd
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui-controlnet.git /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui-segment-anything.git /workspace/stable-diffusion-webui/extensions/sd-webui-segment-anything
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-roop.git /workspace/stable-diffusion-webui/extensions/sd-webui-roop
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-adetailer.git /workspace/stable-diffusion-webui/extensions/sd-webui-adetailer
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-ootd.git /workspace/stable-diffusion-webui/extensions/sd-webui-ootd
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-cvt.git /workspace/stable-diffusion-webui/extensions/sd-webui-cvt
 
 $SCRIPT_DIR/setup-modeli.sh
 $SCRIPT_DIR/setup-common.sh
