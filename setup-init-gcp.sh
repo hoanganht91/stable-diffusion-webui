@@ -13,11 +13,12 @@ sudo apt install -y libgoogle-perftools4 libtcmalloc-minimal4
 mkdir -p /workspace/logs
 
 # setup extension
-git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui-controlnet.git /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet
-git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui-segment-anything.git /workspace/stable-diffusion-webui/extensions/sd-webui-segment-anything
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-controlnet.git /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-segment-anything.git /workspace/stable-diffusion-webui/extensions/sd-webui-segment-anything
 git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-roop.git /workspace/stable-diffusion-webui/extensions/sd-webui-roop
 git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-adetailer.git /workspace/stable-diffusion-webui/extensions/sd-webui-adetailer
 git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-ootd.git /workspace/stable-diffusion-webui/extensions/sd-webui-ootd
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-rembg.git /workspace/stable-diffusion-webui/extensions/sd-webui-rembg
 git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-cvt.git /workspace/stable-diffusion-webui/extensions/sd-webui-cvt
 
 $SCRIPT_DIR/setup-modeli.sh
