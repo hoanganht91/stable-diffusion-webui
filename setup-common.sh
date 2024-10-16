@@ -6,6 +6,14 @@ if ! command -v aria2c &> /dev/null; then
     apt install -y aria2
 fi
 
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-controlnet.git /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-segment-anything.git /workspace/stable-diffusion-webui/extensions/sd-webui-segment-anything
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-roop.git /workspace/stable-diffusion-webui/extensions/sd-webui-roop
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-adetailer.git /workspace/stable-diffusion-webui/extensions/sd-webui-adetailer
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-ootd.git /workspace/stable-diffusion-webui/extensions/sd-webui-ootd
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-rembg.git /workspace/stable-diffusion-webui/extensions/sd-webui-rembg
+git clone ssh://git@gitlab.dev.heatmob.net:2222/heatmob/ai-dev/sd-webui/sd-webui-cvt.git /workspace/stable-diffusion-webui/extensions/sd-webui-cvt
+
 # Controlnet
 aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1e_sd15_tile.pth -d /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o control_v11f1e_sd15_tile.pth &\
 aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11e_sd15_ip2p.pth -d /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o control_v11e_sd15_ip2p.pth &\
