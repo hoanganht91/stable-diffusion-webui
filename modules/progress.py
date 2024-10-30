@@ -219,8 +219,9 @@ def progressapi(req: ProgressRequest):
     else:
         live_preview = None
     if current_task_progress is not None and progress < current_task_progress:
-        logger.error(f"Progress went backwards: {current_task_progress} -> {progress}")
-        logger.error(f"Progress: {progress} - sampling:{sampling_step}/{sampling_steps} - job:{job_no}/{job_count} - adetailJob:{adetail_task_no}/{adetail_task_count} - adetailSubJob:{adetail_subtask_no}/{adetail_subtask_count}")
+        logger.warn(f"Progress went backwards: {current_task_progress} -> {progress}")
+        logger.warn(f"Progress: {progress} - sampling:{sampling_step}/{sampling_steps} - job:{job_no}/{job_count} - adetailJob:{adetail_task_no}/{adetail_task_count} - adetailSubJob:{adetail_subtask_no}/{adetail_subtask_count}")
+        progress = current_task_progress
     current_task_progress = progress
     logger.debug(f"Progress: {progress} - sampling:{sampling_step}/{sampling_steps} - job:{job_no}/{job_count} - adetailJob:{adetail_task_no}/{adetail_task_count} - adetailSubJob:{adetail_subtask_no}/{adetail_subtask_count}")
 

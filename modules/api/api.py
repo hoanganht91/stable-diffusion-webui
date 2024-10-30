@@ -606,6 +606,7 @@ class Api:
             "do_not_save_samples": not txt2imgreq.save_images,
             "do_not_save_grid": not txt2imgreq.save_images,
         })
+        extras_paramter = txt2imgreq.extras
         if populate.sampler_name:
             populate.sampler_index = None  # prevent a warning later on
 
@@ -613,6 +614,7 @@ class Api:
         args.pop('script_name', None)
         args.pop('script_args', None) # will refeed them to the pipeline directly after initializing them
         args.pop('alwayson_scripts', None)
+        args.pop('extras', None)
 
         script_args = self.init_script_args(txt2imgreq, self.default_script_arg_txt2img, selectable_scripts, selectable_script_idx, script_runner)
 
@@ -653,11 +655,22 @@ class Api:
                     else:
                         p.script_args = tuple(script_args) # Need to pass args as tuple here
                         processed = process_images(p)
+                    if processed:
+                        image_paths = processed.imagespath
+                        output_images = processed.images
+                    if extras_paramter and image_paths:
+                        image_paths = []
+                        extras_paramter_req = models.ExtrasSingleImageRequest.parse_obj(extras_paramter)
+                        for img in output_images:
+                            reqDict = setUpscalers(extras_paramter_req)
+                            reqDict['image'] = img
+                            extras_result = postprocessing.run_extras(task_id, token=None, extras_mode=0, image_folder="", input_dir="", output_dir="", save_output=True, **reqDict)
+                            image_paths.append(json.loads(extras_result[-1])[0])
                 except Exception as e:
                     exception = e
                 finally:
                     if processed:
-                        progress.save_images_result(task_id, processed.imagespath, processed.js())
+                        progress.save_images_result(task_id, image_paths, processed.js())
                     progress.finish_task(task_id)
                     shared.state.end()
                     logger.info('text2imgapi done in {:.3f} seconds'.format(time.time() - t))
@@ -679,6 +692,7 @@ class Api:
         watermark = img2imgreq.watermark
         refine_output = img2imgreq.refine_output
         alwayson_scripts = img2imgreq.alwayson_scripts
+        extras_paramter = img2imgreq.extras
         if mask:
             mask = decode_base64_to_image(mask)
             if not auto_mask:
@@ -712,6 +726,7 @@ class Api:
         args.pop('boxed_mask', None)
         args.pop('watermark', None)
         args.pop('refine_output', None)
+        args.pop('extras', None)
 
         script_args = self.init_script_args(img2imgreq, self.default_script_arg_img2img, selectable_scripts, selectable_script_idx, script_runner)
 
@@ -782,6 +797,20 @@ class Api:
                             else:
                                 p2.script_args = tuple(script_args)
                                 processed2 = process_images(p2)
+                    if processed2:
+                        image_paths = processed2.imagespath
+                        output_images = processed2.images
+                    elif processed:
+                        image_paths = processed.imagespath
+                        output_images = processed.images
+                    if extras_paramter and image_paths:
+                        image_paths = []
+                        extras_paramter_req = models.ExtrasSingleImageRequest.parse_obj(extras_paramter)
+                        for img in output_images:
+                            reqDict = setUpscalers(extras_paramter_req)
+                            reqDict['image'] = img
+                            extras_result = postprocessing.run_extras(task_id, token=None, extras_mode=0, image_folder="", input_dir="", output_dir="", save_output=True, **reqDict)
+                            image_paths.append(json.loads(extras_result[-1])[0])
                 except Exception as e:
                     exception = e
                     raise e
@@ -792,12 +821,12 @@ class Api:
                         infotext["refine_output"] = infotext2
                         if refine_output.get("debug_step1", None):
                             infotext["imagespath_step1"] = processed.imagespath
-                        imagespath = processed2.imagespath
+                        imagespath = image_paths
                         if watermark:
                             imagespath = add_watermark(imagespath, watermark)
                         progress.save_images_result(task_id, imagespath, json.dumps(infotext))
                     elif processed:
-                        imagespath = processed.imagespath
+                        imagespath = image_paths
                         if watermark:
                             imagespath = add_watermark(imagespath, watermark)
                         progress.save_images_result(task_id, imagespath, processed.js())

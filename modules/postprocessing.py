@@ -85,7 +85,7 @@ def run_postprocessing(id_task: str, token: str, extras_mode, image, image_folde
     return outputs, ui_common.plaintext_to_html(infotext), '', json.dumps(images_path)
 
 
-def run_extras(id_task: str, token: str, extras_mode, resize_mode, image, image_folder, input_dir, output_dir, show_extras_results, gfpgan_visibility, codeformer_visibility, codeformer_weight, upscaling_resize, upscaling_resize_w, upscaling_resize_h, upscaling_crop, extras_upscaler_1, extras_upscaler_2, extras_upscaler_2_visibility, upscale_first: bool, save_output: bool = True):
+def run_extras(id_task: str, token: str, extras_mode, resize_mode, image, image_folder, input_dir, output_dir, show_extras_results, gfpgan_visibility, codeformer_visibility, codeformer_weight, upscaling_resize, upscaling_resize_w, upscaling_resize_h, upscaling_crop, extras_upscaler_1, extras_upscaler_2, extras_upscaler_2_visibility, upscale_first: bool, save_output: bool = True, **kwargs):
     """old handler for API"""
 
     args = scripts.scripts_postproc.create_args_for_run({

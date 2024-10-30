@@ -148,7 +148,11 @@ def load_network(name, network_on_disk):
     matched_networks = {}
 
     for key_network, weight in sd.items():
-        key_network_without_network_parts, network_part = key_network.split(".", 1)
+        try:
+            key_network_without_network_parts, network_part = key_network.split(".", 1)
+        except Exception as e:
+            print(f"Failed to split key {key_network}")
+            continue
 
         key = convert_diffusers_name_to_compvis(key_network_without_network_parts, is_sd2)
         sd_module = shared.sd_model.network_layer_mapping.get(key, None)
