@@ -1,9 +1,6 @@
 app:
-  server_id: ""
+  server_id: "default"
   server_type: "default"
-  models: "Majicmix"
-  url: ""
-  app_name: ""
-  source_branch: ""
-  base_api: ""
-  lora_base_url: ""
+  models: "CyberrealisticInpaint"
+  base_api: "https://beta-api.v2a.ai"
+  lora_base_url: "https://media2.vision2art.ai/trainingsdata"
