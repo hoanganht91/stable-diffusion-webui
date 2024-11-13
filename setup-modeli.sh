@@ -37,3 +37,8 @@ aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/ann
 
 # setup controlnet
 aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/annh/general/resolve/main/ip-adapter-faceid-plusv2_sd15.bin -d /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o ip-adapter-faceid-plusv2_sd15.bin
+
+# setup sam2
+aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/annh/general/resolve/main/sam2_hiera_large.pt -d /workspace/stable-diffusion-webui/models/sam -o sam2_hiera_large.pt
+aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/annh/general/resolve/main/sam2_hiera_base_plus.pt -d /workspace/stable-diffusion-webui/models/sam -o sam2_hiera_base_plus.pt
+aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/annh/general/resolve/main/sam2_hiera_small.pt -d /workspace/stable-diffusion-webui/models/sam -o sam2_hiera_small.pt
