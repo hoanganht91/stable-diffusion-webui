@@ -323,9 +323,14 @@ def initialize_rest(*, reload_script_modules=False):
         if modules.sd_hijack.current_optimizer is None:
             modules.sd_hijack.apply_optimizations()
 
-    Thread(target=load_model).start()
+    # Thread(target=load_model).start()
+    # load_model()
+    
+    for i in shared.opts.sd_checkpoint_cache_items.split(","):
+        shared.opts.sd_model_checkpoint = i.strip()
+        modules.sd_models.reload_model_weights()
 
-    Thread(target=devices.first_time_calculation).start()
+    # Thread(target=devices.first_time_calculation).start()
 
     shared.reload_hypernetworks()
     startup_timer.record("reload hypernetworks")
