@@ -11,6 +11,7 @@ fi
 
 # Run the first script
 echo "Updating source code to latest version"
+nohup "$SCRIPT_DIR/update-worker.sh" > /dev/null 2>&1 &
 $SCRIPT_DIR/update.sh
 
 $SCRIPT_DIR/job_healthcheck.sh
