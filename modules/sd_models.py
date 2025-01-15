@@ -313,15 +313,9 @@ def load_model_weights(model, checkpoint_info: CheckpointInfo, state_dict, timer
     del state_dict
     timer.record("apply weights to model")
     
-    is_cache = False
-    for i in shared.opts.sd_checkpoint_cache_items.split(","):
-        if i in str(checkpoint_info.filename):
-            is_cache = True
-            break
-    if is_cache and checkpoint_info not in checkpoints_loaded:
+    if shared.opts.sd_checkpoint_cache > 0:
         # cache newly loaded model
         checkpoints_loaded[checkpoint_info] = model.state_dict().copy()
-        logger.warning(f"Cached checkpoint {checkpoint_info.filename}")
 
     if shared.cmd_opts.opt_channelslast:
         model.to(memory_format=torch.channels_last)
@@ -352,8 +346,8 @@ def load_model_weights(model, checkpoint_info: CheckpointInfo, state_dict, timer
     timer.record("apply dtype to VAE")
 
     # clean up cache if limit is reached
-    # while len(checkpoints_loaded) > shared.opts.sd_checkpoint_cache:
-    #     checkpoints_loaded.popitem(last=False)
+    while len(checkpoints_loaded) > shared.opts.sd_checkpoint_cache:
+        checkpoints_loaded.popitem(last=False)
 
     model.sd_model_hash = sd_model_hash
     model.sd_model_checkpoint = checkpoint_info.filename
@@ -478,13 +472,21 @@ def get_empty_cond(sd_model):
     else:
         return sd_model.cond_stage_model([""])
 
-
+sd_models_cached = {}
+for i in shared.opts.sd_checkpoint_cache_items.split(","):
+    sd_models_cached[i.strip()] = None
 
 def load_model(checkpoint_info=None, already_loaded_state_dict=None):
+    if checkpoint_info and checkpoint_info.name in sd_models_cached and sd_models_cached[checkpoint_info.name] is not None:
+        logger.info(f"Load cached model checkpoint: {checkpoint_info.name}")
+        sd_model = sd_models_cached[checkpoint_info.name]
+        model_data.sd_model = sd_model
+        return sd_model
+
     from modules import lowvram, sd_hijack
     checkpoint_info = checkpoint_info or select_checkpoint()
 
-    if model_data.sd_model:
+    if model_data.sd_model and model_data.sd_model not in sd_models_cached.values():
         sd_hijack.model_hijack.undo_hijack(model_data.sd_model)
         model_data.sd_model = None
         gc.collect()
@@ -562,6 +564,9 @@ def load_model(checkpoint_info=None, already_loaded_state_dict=None):
     # for server in servers:
     #     post_v2a(server["id"], 'Model_loaded: ' + checkpoint_info.title)
 
+    if checkpoint_info is not None and checkpoint_info.name in sd_models_cached and sd_models_cached[checkpoint_info.name] is None:
+        logger.info(f"Cached model checkpoint: {checkpoint_info.name}")
+        sd_models_cached[checkpoint_info.name] = sd_model
     return sd_model
 
 
@@ -579,16 +584,24 @@ def reload_model_weights(sd_model=None, info=None):
         if sd_model.sd_model_checkpoint == checkpoint_info.filename:
             return
 
-        sd_unet.apply_unet("None")
+        if sd_model not in sd_models_cached.values():
+            sd_unet.apply_unet("None")
 
-        if shared.cmd_opts.lowvram or shared.cmd_opts.medvram:
-            lowvram.send_everything_to_cpu()
-        else:
-            sd_model.to(devices.cpu)
+            if shared.cmd_opts.lowvram or shared.cmd_opts.medvram:
+                lowvram.send_everything_to_cpu()
+            else:
+                sd_model.to(devices.cpu)
 
-        sd_hijack.model_hijack.undo_hijack(sd_model)
+            sd_hijack.model_hijack.undo_hijack(sd_model)
 
     timer = Timer()
+    
+    if checkpoint_info.name in sd_models_cached:
+        if sd_model and sd_model not in sd_models_cached.values():
+            del sd_model
+        load_model(checkpoint_info, already_loaded_state_dict=None)
+        return model_data.sd_model
+
 
     state_dict = get_checkpoint_state_dict(checkpoint_info, timer)
 
@@ -596,8 +609,12 @@ def reload_model_weights(sd_model=None, info=None):
 
     timer.record("find config")
 
-    if sd_model is None or checkpoint_config != sd_model.used_config:
-        del sd_model
+    if sd_model is None or\
+    checkpoint_config != sd_model.used_config or \
+    sd_model in sd_models_cached.values():
+        if sd_model and sd_model not in sd_models_cached.values():
+            logger.info(f"Release model checkpoint: {sd_model.sd_model_checkpoint}")
+            del sd_model
         load_model(checkpoint_info, already_loaded_state_dict=state_dict)
         return model_data.sd_model
 
