@@ -5,11 +5,11 @@ script_path="/workspace/stable-diffusion-webui/healthcheck.py"
 if [ "$1" == "install" ]; then
     # Check if the script is run with sudo
     sudoers_entry="root ALL=(ALL) NOPASSWD: $script_path"
-    if sudo grep -q "$sudoers_entry" /etc/sudoers; then
+    if grep -q "$sudoers_entry" /etc/sudoers; then
       echo "Sudoers entry already exists"
     else
       # Add sudoers entry to run the Python script without a password
-      echo "$sudoers_entry" | sudo EDITOR='tee -a' visudo
+      echo "$sudoers_entry" | EDITOR='tee -a' visudo
       echo "Sudoers entry added"
     fi
     exit 0

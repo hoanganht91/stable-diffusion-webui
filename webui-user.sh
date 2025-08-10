@@ -4,12 +4,12 @@
 #########################################################
 
 # Group: Majicmix, RevAnimated, Meinamix, RealisticVision, CosplayMix, ...
-ID=$(cat /workspace/config.yaml | yq .app.server_id)
-TYPE=$(cat /workspace/config.yaml | yq .app.server_type)
-GROUP=$(cat /workspace/config.yaml | yq .app.models)
-URL="http://$(curl ifconfig.me --silent):3000"
-BASE_API=$(cat /workspace/config.yaml | yq .app.base_api)
-LORA_BASE_URL=$(cat /workspace/config.yaml | yq .app.lora_base_url)
+ID="runpod"
+TYPE="default"
+GROUP="CyberrealisticInpaint"
+URL="http://$(curl ifconfig.me --silent):3001"
+BASE_API="https://beta-api.v2a.ai"
+LORA_BASE_URL="https://beta-api.v2a.ai"
 
 # Install directory without trailing slash
 install_dir="/workspace"

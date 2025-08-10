@@ -13,7 +13,7 @@ else
 fi
 
 # Create or update the service file
-cat <<EOL | sudo tee "$service_file" >/dev/null
+cat <<EOL | tee "$service_file" >/dev/null
 [Unit]
 Description=SD Service
 After=network.target
@@ -34,8 +34,8 @@ WantedBy=multi-user.target
 EOL
 
 # Reload systemd and enable/start the service
-sudo systemctl daemon-reload
-sudo systemctl enable "$service_name"
+systemctl daemon-reload
+systemctl enable "$service_name"
 
 # Display the service status
-sudo systemctl status "$service_name"
+systemctl status "$service_name"

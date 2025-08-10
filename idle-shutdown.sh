@@ -22,7 +22,7 @@ do
   if (( count >= wait_minutes )); then
     echo "Shutting down due to 60 minutes of idle time."
     sleep 60
-    sudo poweroff
+    poweroff
   fi
   
   sleep 60
