@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-git clone ssh://git@github.com:hoanganht91/sd-webui-controlnet.git /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet
-git clone ssh://git@github.com:hoanganht91/sd-webui-segment-anything.git /workspace/stable-diffusion-webui/extensions/sd-webui-segment-anything
-git clone ssh://git@github.com:hoanganht91/sd-webui-roop.git /workspace/stable-diffusion-webui/extensions/sd-webui-roop
-git clone ssh://git@github.com:hoanganht91/sd-webui-adetailer.git /workspace/stable-diffusion-webui/extensions/sd-webui-adetailer
-git clone ssh://git@github.com:hoanganht91/sd-webui-ootd.git /workspace/stable-diffusion-webui/extensions/sd-webui-ootd
-git clone ssh://git@github.com:hoanganht91/sd-webui-rembg.git /workspace/stable-diffusion-webui/extensions/sd-webui-rembg
-git clone ssh://git@github.com:hoanganht91/sd-webui-cvt.git /workspace/stable-diffusion-webui/extensions/sd-webui-cvt
+git clone https://github.com/hoanganht91/sd-webui-controlnet.git /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet
+git clone https://github.com/hoanganht91/sd-webui-segment-anything.git /workspace/stable-diffusion-webui/extensions/sd-webui-segment-anything
+git clone https://github.com/hoanganht91/sd-webui-roop.git /workspace/stable-diffusion-webui/extensions/sd-webui-roop
+git clone https://github.com/hoanganht91/sd-webui-adetailer.git /workspace/stable-diffusion-webui/extensions/sd-webui-adetailer
+git clone https://github.com/hoanganht91/sd-webui-ootd.git /workspace/stable-diffusion-webui/extensions/sd-webui-ootd
+git clone https://github.com/hoanganht91/sd-webui-rembg.git /workspace/stable-diffusion-webui/extensions/sd-webui-rembg
+git clone https://github.com/hoanganht91/sd-webui-cvt.git /workspace/stable-diffusion-webui/extensions/sd-webui-cvt
 
 # setup checkpoint
 aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/annh/general/resolve/main/chilloutmix_NiPrunedFp32.safetensors -d /workspace/stable-diffusion-webui/models/Stable-diffusion -o chilloutmix_NiPrunedFp32.safetensors
