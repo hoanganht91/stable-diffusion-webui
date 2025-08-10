@@ -262,7 +262,10 @@ def requirements_met(requirements_file):
             except Exception:
                 return False
 
-            if packaging.version.parse(version_required) != packaging.version.parse(version_installed):
+            try:
+                if packaging.version.parse(version_required) != packaging.version.parse(version_installed):
+                    return False
+            except Exception:
                 return False
 
     return True
